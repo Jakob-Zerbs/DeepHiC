@@ -2,15 +2,15 @@ import os
 import argparse
 
 # the Root directory for all raw and processed data
-root_dir = '/data/RaoHiC'
+root_dir = '/cluster/projects/epigenomics/Jakob/HiC_tools/DeepHiC/datasets/mm10'
 
 res_map = {'5kb': 5_000, '10kb': 10_000, '25kb': 25_000, '50kb': 50_000, '100kb': 100_000, '250kb': 250_000, '500kb': 500_000, '1mb': 1_000_000}
 
 # 'train' and 'valid' can be changed for different train/valid set splitting
 set_dict = {'human': list(range(1, 23)) + ['X'],
-            'mouse': list(range(1,20))) + ['X'],
+            'mouse': list(range(1,20)) + ['X'],
             'train': [1, 2, 3, 4, 5, 6, 7, 12, 13, 14, 15, 16, 17, 18], 
-            'valid': [8, 9, 10, 11, 19, 20, 21, 22]}
+            'valid': [8, 9, 10, 11, 19, 'X']} # modified for mouse dataset
 
 help_opt = (('--help', '-h'), {
     'action':'help',
@@ -79,7 +79,7 @@ def data_divider_parser():
                           default='40kb', required=True)
     req_args.add_argument('-lrc', dest='lr_cutoff', help='REQUIRED: cutoff for low resolution maps[example:100]', default=100, type=int, required=True)
     req_args.add_argument('-s', dest='dataset', help='REQUIRED: Dataset for train/valid/predict(all)', 
-                          default='train', choices=['all', 'train', 'valid'], )
+                          default='train', choices=['all', 'train', 'valid', 'human', 'mouse'], )
     deephic_args = parser.add_argument_group('DeepHiC Arguments')
     deephic_args.add_argument('-chunk', dest='chunk', help='REQUIRED: chunk size for dividing[example:40]', 
                             default=40, type=int, required=True)
